@@ -1,0 +1,127 @@
+---
+title: "Home Work One"
+format:
+  revealjs: 
+    theme: sky
+    slide-number: true
+    scrollable: true
+    fontsize: 1.4em
+    embed-resources: false
+    standalone: false
+
+---
+
+```{r}
+#| label: Importing-Data
+#| echo: false
+#| message: false
+#| warning: false
+# Libraries
+library(ggplot2)
+library(tidyverse)
+
+# Loading the datasets
+data(ChickWeight)
+df = ChickWeight
+```
+
+### Data Description
+
+The data set **ChickWeight** was originally part of the package *nlme*   
+and has measurements of the body weights of chicks     
+that were fed with different types of diets.    
+The data set has `r dim(df)[1]` rows and `r dim(df)[2]` columns.    
+The features are :   
+
+ + <span style="color: red;">weight</span>
+
+ + <span style="color: yellow;">Time</span>
+
+ +  <span style="color: blue;">Chick</span>
+
+ +  <span style="color: green;">Diet</span>
+
+ 
+***
+
+### Weight Distibution
+
+According to the help [file](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/ChickWeight) of this dataset       
+the body weights of the chicks were recorded every second     
+day from their birth until the 21st day.    
+The graph below shows the distribution of the chick weights.     
+The <span style="color: black;">black dashed line</span> shows the mean weight which is `r round(mean(df$weight), digits = 2)` gm.     
+We see that the mode is around 50 gm.    
+
+```{r}
+#| label: Weight-Distribution
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 20
+#| fig-height: 15
+
+# distribution of weight
+ggplot(df, aes(x = weight)) +
+  geom_density(fill = "blue", alpha = 0.3) + 
+  geom_vline(aes(xintercept = mean(weight)),
+             color = "black",linetype = "dashed",
+             size = 0.5) +
+  theme_linedraw() +
+  labs(title = "Distribution of Chick Weights", x = "Weight", y = "Density")
+```
+
+***
+
+### Data Summary
+
+Below is a summary of each feature.
+
+```{r}
+#| label: Data-Statistics
+#| echo: false
+#| message: false
+#| warning: false
+
+# Displaying stats of each column
+summary(df)
+```
+
+From the output above we see that the minimum weight is 35 gm   
+and the max is 373 gm. We see for the time variable the max day is 21.   
+The measurements started on day 0 and ended on day 21.   
+The feature *Chick* is a unique identifier and an ordered factor.   
+Here the summary shows the chicks with the most frequent count of observations.    
+The variable Diet is also a categorical variable and it shows   
+the amount of observations per category.
+
+***
+
+### Box Plots
+
+```{r}
+#| label: Box-Plots
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 20
+#| fig-height: 15
+
+# Changing diet into a factor
+df$Diet = factor(df$Diet)
+
+# Boxplots of weights per diet types
+ggplot(df, aes(x = Diet,y = weight, fill = Diet)) +
+  geom_boxplot() +
+  theme_light() +
+  labs(title = "Weight of Chicks ~ Diet", x = "Diet Type", y= "Weight")
+```
+
+The plot above illustrates the distribution of the      
+chick weights for each diet type. Diet 4 seems to have        
+the highest median weight and diet 1 the lowest median.    
+We see that there might be a significant difference in means for each diet.   
+In order to test this we could perform an anova test to see         
+if there is a significant difference in means.      
+
+***
