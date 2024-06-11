@@ -125,3 +125,21 @@ In order to test this we could perform an anova test to see
 if there is a significant difference in means.      
 
 ***
+
+# Assignment Two
+### Creating two changes to commit to the github repository
+
+```{r}
+#| label: Change-One
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 20
+#| fig-height: 15
+
+ggplot(df, aes(x = Time, y = weight, color = Diet)) +
+  geom_point() +
+  theme_light() +
+  labs(title = "Time ~ Weight")
+
+```
